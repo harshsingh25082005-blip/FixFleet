@@ -1,0 +1,48 @@
+@startuml
+left to right direction
+
+actor Customer
+actor "Service Provider" as Provider
+actor Admin
+actor "Payment Gateway" as Payment
+actor "Notification Service" as Notify
+actor "System Clock" as Clock
+
+rectangle "FixFleet System" {
+  usecase "Register / Log in" as UC1
+  usecase "Search Service Provider" as UC2
+  usecase "View Provider Profile" as UC3
+  usecase "Book Service" as UC4
+  usecase "Select Time Slot" as UC5
+  usecase "Make Payment" as UC6
+  usecase "Track Booking Status" as UC7
+  usecase "Cancel Booking" as UC8
+  usecase "Accept / Reject Request" as UC9
+  usecase "Update Job Status" as UC10
+  usecase "Verify Provider" as UC11
+  usecase "Send Booking Reminder" as UC12
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC3
+Customer --> UC4
+Customer --> UC6
+Customer --> UC7
+Customer --> UC8
+
+Provider --> UC1
+Provider --> UC9
+Provider --> UC10
+
+Admin --> UC11
+
+Payment --> UC6
+Notify --> UC12
+Clock --> UC12
+
+UC4 .> UC5 : <<include>>
+UC4 .> UC6 : <<include>>
+UC8 .> UC4 : <<extend>>\n[before provider starts work]
+
+@enduml
