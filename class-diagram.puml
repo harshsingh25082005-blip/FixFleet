@@ -1,0 +1,124 @@
+@startuml
+title FixFleet - Domain Class Diagram
+
+skinparam classAttributeIconSize 0
+
+class Customer {
+  - customerId: int
+  - name: String
+  - email: String
+  - phone: String
+  + register(): void
+  + searchService(): void
+  + createBooking(): Booking
+  + cancelBooking(): void
+}
+
+class ServiceProvider {
+  - providerId: int
+  - name: String
+  - phone: String
+  - experience: int
+  - workingHours: String
+  + register(): void
+  + acceptRequest(booking: Booking): void
+  + rejectRequest(booking: Booking): void
+  + updateJobStatus(status: String): void
+}
+
+class ServiceProviderProfile {
+  - profileId: int
+  - charges: double
+  - serviceArea: String
+  - description: String
+  + updateProfile(): void
+  + viewProfile(): void
+}
+
+class Service {
+  - serviceId: int
+  - name: String
+  - description: String
+  + getServiceDetails(): String
+}
+
+class Skill {
+  - skillId: int
+  - name: String
+  + addSkill(): void
+  + removeSkill(): void
+}
+
+class Booking {
+  - bookingId: int
+  - bookingDate: Date
+  - status: String
+  - createdAt: Date
+  + createBooking(): void
+  + confirmBooking(): void
+  + cancelBooking(): void
+  + updateStatus(status: String): void
+}
+
+class TimeSlot {
+  - slotId: int
+  - startTime: DateTime
+  - endTime: DateTime
+  - available: boolean
+  + checkAvailability(): boolean
+  + reserve(): void
+  + release(): void
+}
+
+class Payment {
+  - paymentId: int
+  - amount: double
+  - status: String
+  - paymentDate: Date
+  + processPayment(): void
+  + updateStatus(status: String): void
+  + requestRefund(): Refund
+}
+
+class Refund {
+  - refundId: int
+  - amount: double
+  - status: String
+  - refundDate: Date
+  + initiate(): void
+  + updateStatus(status: String): void
+}
+
+class Rating {
+  - ratingId: int
+  - score: int
+  - comment: String
+  + addRating(): void
+}
+
+class Notification {
+  - notificationId: int
+  - message: String
+  - type: String
+  - sentAt: DateTime
+  + send(): void
+}
+
+Customer "1" -- "0..*" Booking : creates
+ServiceProvider "1" -- "0..*" Booking : receives
+Service "1" -- "0..*" Booking : requested in
+Booking "1" -- "1" TimeSlot : scheduled for
+Booking "1" -- "0..1" Payment : paid by
+Payment "1" -- "0..1" Refund : may generate
+Customer "1" -- "0..*" Rating : gives
+ServiceProvider "1" -- "0..*" Rating : receives
+
+ServiceProvider "1" -- "1" ServiceProviderProfile : has
+ServiceProviderProfile "1" -- "1..*" Skill : lists
+ServiceProvider "0..*" -- "1..*" Service : offers
+
+Customer "1" -- "0..*" Notification : receives
+ServiceProvider "1" -- "0..*" Notification : receives
+Booking "1" -- "0..*" Notification : generates
+
+@enduml
