@@ -1,0 +1,87 @@
+@startuml
+title FixFleet - Object Diagram
+
+object "Rahul : Customer" as customer {
+  customerId = 101
+  name = "Rahul Sharma"
+  email = "rahul@example.com"
+  phone = "9876543210"
+}
+
+object "Amit : ServiceProvider" as provider {
+  providerId = 205
+  name = "Amit Kumar"
+  phone = "9988776655"
+  experience = 5
+  workingHours = "09:00-18:00"
+}
+
+object "AmitProfile : ServiceProviderProfile" as profile {
+  profileId = 305
+  charges = 500.0
+  serviceArea = "Gandhinagar"
+  description = "Experienced residential electrician"
+}
+
+object "Electrical Repair : Service" as service {
+  serviceId = 401
+  name = "Electrical Repair"
+  description = "Repair of switches and wiring"
+}
+
+object "Wiring : Skill" as skill {
+  skillId = 501
+  name = "Electrical Wiring"
+}
+
+object "BKG1001 : Booking" as booking {
+  bookingId = 1001
+  bookingDate = "20-Aug-2026"
+  status = "Accepted"
+  createdAt = "19-Aug-2026"
+}
+
+object "Slot09 : TimeSlot" as slot {
+  slotId = 601
+  startTime = "20-Aug-2026 10:00"
+  endTime = "20-Aug-2026 11:00"
+  available = false
+}
+
+object "PAY7001 : Payment" as payment {
+  paymentId = 7001
+  amount = 500.0
+  status = "Paid"
+  paymentDate = "19-Aug-2026"
+}
+
+object "RAT8001 : Rating" as rating {
+  ratingId = 8001
+  score = 5
+  comment = "Excellent service"
+}
+
+object "NOT9001 : Notification" as notification {
+  notificationId = 9001
+  message = "Your booking has been accepted"
+  type = "Booking Update"
+  sentAt = "19-Aug-2026 14:30"
+}
+
+customer -- booking : creates
+provider -- booking : receives
+service -- booking : requested in
+booking -- slot : scheduled for
+booking -- payment : paid by
+customer -- rating : gives
+provider -- rating : receives
+
+provider -- profile : has
+profile -- skill : lists
+provider -- service : offers
+
+customer -- notification : receives
+provider -- notification : receives
+booking -- notification : generates
+
+@enduml
